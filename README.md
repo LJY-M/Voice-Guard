@@ -1,7 +1,5 @@
 # Voice Guard: Protecting Voice Privacy with Strong and Imperceptible Adversarial Perturbation in the Time Domain
 
-## Introduction
-
 This is the official implementation of the paper [Voice Guard: Protecting Voice Privacy with Strong and Imperceptible Adversarial Perturbation in the Time Domain](https://www.ijcai.org/proceedings/2023/535).
 We use adversarial attack to prevent one's voice from improperly utilized in voice conversion.
 The conversion fails when adversarial noise is added to the input utterance.
@@ -10,7 +8,7 @@ Thanks to [Attack VC](https://github.com/cyhuang-tw/attack-vc) for the code base
 
 This implementation is based on [Attack VC](https://github.com/cyhuang-tw/attack-vc), so we only show the implementation of the core functions.
 
-## Core
+## Core coda
 
 _attack_utils.py_ : implements Voice Guard's core attack flow.
 
