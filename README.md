@@ -8,6 +8,8 @@ Thanks to [Attack VC](https://github.com/cyhuang-tw/attack-vc) for the code base
 
 This implementation is based on [Attack VC](https://github.com/cyhuang-tw/attack-vc), so we only show the implementation of the core functions.
 
+This algorithm is no longer maintained, please implement it as you wish.
+
 ## Core coda
 
 _attack_utils.py_ : implements Voice Guard's core attack flow.
