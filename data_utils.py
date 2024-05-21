@@ -52,6 +52,46 @@ class InversePreEmphasis(torch.nn.Module):
         x, _ = self.rnn(input.transpose(1, 2))
         return x.transpose(1, 2)
 
+
+class Transform(object):
+    '''
+    Return: PSD
+    '''
+
+    def __init__(
+            self,
+            sample_rate: int,
+            preemph: float,
+            n_fft: int,
+            hop_length: int,
+            win_length: int,
+            n_mels: int,
+            ref_db: float,
+            max_db: float,
+            top_db: float,
+    ):
+        self.scale = 8. / 3.
+        self.n_fft = n_fft
+        self.hop_length = hop_length
+        self.win_length = win_length
+
+    def __call__(self, x, psd_max_ori):
+
+        device = x.device
+
+        win = torch.stft(input=x, n_fft=self.n_fft, hop_length=self.hop_length, win_length=self.win_length,
+                            window=torch.hann_window(self.win_length).cuda(), center=True, pad_mode='reflect',
+                            normalized=False, onesided=True, return_complex=False)
+        mag = torch.sqrt(win.pow(2).sum(-1) + (1e-9))
+
+        z = self.scale * torch.abs(mag / self.win_length)
+        psd = torch.square(z)
+        PSD = torch.pow(torch.tensor([10.]), 9.6).to(device) / torch.reshape(psd_max_ori, [-1, 1, 1]) * psd
+        PSD = PSD.squeeze().T
+        PSD = 10 * torch.log10(PSD)
+        return PSD
+        
+
 def normalize_tensor(mel: torch.Tensor, attr: Dict) -> np.array:
     mean, std = attr["mean"], attr["std"]
     mel = torch.div(torch.sub(mel, torch.from_numpy(mean).cuda()), torch.from_numpy(std).cuda())
